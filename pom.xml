@@ -39,7 +39,6 @@
         <connection>scm:git:git@github.com:apache/ranger.git</connection>
         <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/ranger.git</developerConnection>
         <url>scm:git:git@github.com:apache/ranger.git</url>
-        <tag>HEAD</tag>
     </scm>
     <issueManagement>
         <system>JIRA</system>
@@ -168,6 +167,7 @@
         <owasp-java-html-sanitizer.version>r239</owasp-java-html-sanitizer.version>
         <paranamer.version>2.3</paranamer.version>
         <presto.version>333</presto.version>
+	<prestodb.version>0.232</prestodb.version>
         <poi.version>3.17</poi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <protobuf-java.version>2.5.0</protobuf-java.version>
@@ -250,6 +250,7 @@
                 <module>plugin-nifi-registry</module>
                 <module>plugin-presto</module>
                 <module>plugin-kudu</module>
+		<module>plugin-prestodb</module>
                 <module>ugsync</module>
                 <module>ugsync/ldapconfigchecktool/ldapconfigcheck</module>
                 <module>unixauthclient</module>
@@ -270,6 +271,7 @@
                 <module>ranger-atlas-plugin-shim</module>
                 <module>ranger-kms-plugin-shim</module>
                 <module>ranger-presto-plugin-shim</module>
+		<module>ranger-prestodb-plugin-shim</module>
                 <module>ranger-examples</module>
                 <module>ranger-tools</module>
                 <module>plugin-atlas</module>
@@ -295,6 +297,41 @@
                 <module>intg</module>
                 <module>ranger-examples</module>
             </modules>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>2.2-beta-5</version>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly/hdfs-agent.xml</descriptor>
+                                <descriptor>src/main/assembly/hive-agent.xml</descriptor>
+                                <descriptor>src/main/assembly/hbase-agent.xml</descriptor>
+                                <descriptor>src/main/assembly/knox-agent.xml</descriptor>
+                                <descriptor>src/main/assembly/storm-agent.xml</descriptor>
+                                <descriptor>src/main/assembly/plugin-kafka.xml</descriptor>
+                                <descriptor>src/main/assembly/plugin-yarn.xml</descriptor>
+                                <descriptor>src/main/assembly/plugin-ozone.xml</descriptor>
+                                <descriptor>src/main/assembly/plugin-solr.xml</descriptor>
+                                <descriptor>src/main/assembly/admin-web.xml</descriptor>
+                                <descriptor>src/main/assembly/solr_audit_conf.xml</descriptor>
+                                <descriptor>src/main/assembly/usersync.xml</descriptor>
+                                <descriptor>src/main/assembly/tagsync.xml</descriptor>
+                                <descriptor>src/main/assembly/migration-util.xml</descriptor>
+                                <descriptor>src/main/assembly/kms.xml</descriptor>
+                                <descriptor>src/main/assembly/ranger-tools.xml</descriptor>
+                                <descriptor>src/main/assembly/ranger-src.xml</descriptor>
+                                <descriptor>src/main/assembly/plugin-atlas.xml</descriptor>
+                                <descriptor>src/main/assembly/plugin-sqoop.xml</descriptor>
+                                <descriptor>src/main/assembly/plugin-kylin.xml</descriptor>
+                                <descriptor>src/main/assembly/plugin-elasticsearch.xml</descriptor>
+                                <descriptor>src/main/assembly/plugin-presto.xml</descriptor>
+				<descriptor>src/main/assembly/plugin-prestodb.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
         <profile>
             <id>ranger-admin</id>
@@ -514,6 +551,33 @@
             </modules>
         </profile>
         <profile>
+            <id>ranger-prestodb-plugin</id>
+            <modules>
+                <module>agents-audit</module>
+                <module>agents-common</module>
+                <module>agents-cred</module>
+                <module>agents-installer</module>
+                <module>credentialbuilder</module>
+                <module>ranger-plugin-classloader</module>
+                <module>ranger-util</module>
+                <module>plugin-prestodb</module>
+                <module>ranger-prestodb-plugin-shim</module>
+            </modules>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>2.2-beta-5</version>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly/plugin-prestodb.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>linux</id>
             <activation>
                 <os>
@@ -572,6 +636,7 @@
                 <module>plugin-kylin</module>
                 <module>ranger-kylin-plugin-shim</module>
                 <module>plugin-presto</module>
+		<module>plugin-prestodb</module>
                 <module>ranger-presto-plugin-shim</module>
                 <module>plugin-elasticsearch</module>
                 <module>ranger-elasticsearch-plugin-shim</module>
@@ -581,6 +646,44 @@
                 -->
                 <module>distro</module>
             </modules>
+		<module>ranger-prestodb-plugin-shim</module>
+                <module>unixauthnative</module>
+            </modules>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>2.2-beta-5</version>
+            <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly/hdfs-agent.xml</descriptor>
+                                <descriptor>src/main/assembly/hive-agent.xml</descriptor>
+                                <descriptor>src/main/assembly/hbase-agent.xml</descriptor>
+                                <descriptor>src/main/assembly/knox-agent.xml</descriptor>
+                                <descriptor>src/main/assembly/storm-agent.xml</descriptor>
+                                <descriptor>src/main/assembly/plugin-kafka.xml</descriptor>
+                                <descriptor>src/main/assembly/plugin-yarn.xml</descriptor>
+                                <descriptor>src/main/assembly/plugin-ozone.xml</descriptor>
+                                <descriptor>src/main/assembly/plugin-solr.xml</descriptor>
+                                <descriptor>src/main/assembly/admin-web.xml</descriptor>
+                                <descriptor>src/main/assembly/solr_audit_conf.xml</descriptor>
+                                <descriptor>src/main/assembly/usersync.xml</descriptor>
+                                <descriptor>src/main/assembly/tagsync.xml</descriptor>
+                                <descriptor>src/main/assembly/migration-util.xml</descriptor>
+                                <descriptor>src/main/assembly/kms.xml</descriptor>
+                                <descriptor>src/main/assembly/ranger-tools.xml</descriptor>
+                                <descriptor>src/main/assembly/ranger-src.xml</descriptor>
+                                <descriptor>src/main/assembly/plugin-atlas.xml</descriptor>
+                                <descriptor>src/main/assembly/plugin-sqoop.xml</descriptor>
+                                <descriptor>src/main/assembly/plugin-kylin.xml</descriptor>
+                                <descriptor>src/main/assembly/plugin-elasticsearch.xml</descriptor>
+                                <descriptor>src/main/assembly/plugin-presto.xml</descriptor>
+				<descriptor>src/main/assembly/plugin-prestodb.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
         <profile>
             <id>linux-pam</id>
@@ -627,6 +730,7 @@
                 <module>plugin-nifi</module>
                 <module>plugin-nifi-registry</module>
                 <module>plugin-presto</module>
+                <module>plugin-prestodb</module>
                 <module>ugsync</module>
                 <module>ugsync/ldapconfigchecktool/ldapconfigcheck</module>
                 <module>unixauthclient</module>
